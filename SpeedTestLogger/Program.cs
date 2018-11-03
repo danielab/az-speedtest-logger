@@ -4,18 +4,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using SpeedTest;
 using SpeedTestLogger.Models;
+using SpeedTestLogger.Services;
 
 namespace SpeedTestLogger
 {
     class Program
     {
-        static async Task Main(string[] args)
+        private static LoggerConfiguration config;
+        private static SpeedTestRunner runner;
+
+        static void Main(string[] args)
         {
-            Console.WriteLine("Hello SpeedTestLogger!");
+            config = new LoggerConfiguration();
+            runner = new SpeedTestRunner(config.LoggerLocation);
 
-            var config = new LoggerConfiguration();
-            var runner = new SpeedTestRunner(config.LoggerLocation);
+            var serviceBus = new ServiceBusConnector(config.QueueConnectionString, config.Topic, config.SubscriptionName);
+            serviceBus.RegisterOnMessageHandlerAndReceiveMessages();
+            
+            Console.ReadKey();
+            
+            serviceBus.Stop();
+        }
 
+        public static async Task RunSpeedTestAndPublish() {
             var testData = runner.RunSpeedTest();
 
             var results = new TestResult

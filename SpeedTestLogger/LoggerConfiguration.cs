@@ -11,6 +11,9 @@ namespace SpeedTestLogger
         public readonly string UserId;
         public readonly int LoggerId;
         public readonly Uri ApiUrl;
+        public readonly string QueueConnectionString;
+        public readonly string Topic;
+        public readonly string SubscriptionName;
 
         public LoggerConfiguration()
         {
@@ -25,6 +28,10 @@ namespace SpeedTestLogger
 
             LoggerId = Int32.Parse(configuration["loggerId"]);
             UserId = configuration["userId"];
+            
+            QueueConnectionString = configuration["Queue:ConnectionString"];
+            Topic = configuration["Queue:Topic"];
+            SubscriptionName = configuration["Queue:SubscriptionName"];
 
             ApiUrl = new Uri(configuration["speedTestApiUrl"]);
 
