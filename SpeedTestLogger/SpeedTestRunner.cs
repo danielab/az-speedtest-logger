@@ -54,7 +54,7 @@ namespace SpeedTestLogger
                     Latitude = server.Latitude,
                     Longitude = server.Longitude,
                     Country = GetISORegionNameFromEnglishName(server.Country),
-                    Distance = server.Distance,
+                    Distance = (int)server.Distance,
                     Ping = server.Latency,
                     Id = server.Id
                 }
